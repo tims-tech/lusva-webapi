@@ -38,6 +38,7 @@ namespace LUSVA
             loggerFactory.AddDebug();
 
             app.UseMvc();
+            app.UseSq
         }
     }
 }
