@@ -1,0 +1,26 @@
+{
+  "version": "1.0.0-*",
+
+  "dependencies": {
+    "LUSVA.WebApi": {
+      "version": "1.0.0-*",
+      "target": "project"
+    },
+    "SimpleTokenProvider": {
+      "version": "1.0.0-*",
+      "target": "project"
+    }
+  },
+
+  "frameworks": {
+    "netcoreapp1.0": {
+      "imports": [
+        "dotnet5.6",
+        "portable-net45+win8"
+      ]
+    },
+    "netstandard1.6": {
+      "imports": "dnxcore50"
+    }
+  }
+}

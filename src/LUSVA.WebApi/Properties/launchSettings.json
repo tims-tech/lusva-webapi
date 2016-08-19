@@ -23,6 +23,10 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
+    },
+    "osx": {
+        "command" : "open",
+        "args" : "-a opera ${auto-detect-url}"
     }
   }
 }
