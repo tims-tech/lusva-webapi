@@ -1,29 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Security.Principal;
-using System.Text;
-using System.Threading.Tasks;
 using LUSVA.WebApi.Configurations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.Tokens;
 using LUSVA.WebApi.Entities;
 using LUSVA.WebApi.Data;
 using LUSVA.WebApi.Extensions;
-using LUSVA.WebApi.Filters;
 using LUSVA.WebApi.Providers;
 using LUSVA.WebApi.Services;
-using LUSVA.WebApi.Middleware;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.Options;
 
 //using SimpleTokenProvider;
 
@@ -64,12 +52,7 @@ namespace LUSVA.WebApi
           new TokenService(TokenServiceConfiguration.DebugConfiguration));
 
       // Add framework services.
-      services.AddMvc(options =>
-      {
-        var filter = new LusvaAuthorizationFilter(new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build());
-        filter = filter.UseTokenService(services);
-        options.Filters.Add(filter);
-      });
+      services.AddMvc();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -80,6 +63,7 @@ namespace LUSVA.WebApi
 
       if (env.IsDevelopment())
       {
+        Console.WriteLine("Is Development");
         app.UseDeveloperExceptionPage();
         app.UseDatabaseErrorPage();
         app.UseBrowserLink();
@@ -91,9 +75,7 @@ namespace LUSVA.WebApi
 
       app.UseIdentity();
 
-      app.UseJwtBearerAuthenticationDebug(TokenServiceConfiguration.Key);
-
-      //app.UseLusvaTokenAuth();
+      app.UseLusvaJwtBearerAuthenticationDebug(TokenServiceConfiguration.Key);
 
       app.UseMvc();
     }

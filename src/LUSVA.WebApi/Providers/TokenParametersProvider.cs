@@ -1,9 +1,5 @@
-﻿
-
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Text;
-using LUSVA.WebApi.Filters;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 

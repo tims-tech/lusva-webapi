@@ -10,6 +10,11 @@ namespace LUSVA.WebApi.Entities
   {
     // Identity Framework handles other fields
 
+    public string FirstName { get; set; }
+
+    public string LastName { get; set; }
+
+    public bool IsInvited { get; set; }
 
     public List<Event> EventsAPartOf { get; set; }
   } 

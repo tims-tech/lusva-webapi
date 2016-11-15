@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Text;
+using LUSVA.WebApi.Entities;
+using LUSVA.WebApi.Middleware;
+using LUSVA.WebApi.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 
 namespace LUSVA.WebApi.Extensions
 {
   public static class LusvaAppBuilderExtensions
   {
-    public static IApplicationBuilder UseJwtBearerAuthenticationDebug(this IApplicationBuilder app, string key)
+    public static IApplicationBuilder UseLusvaJwtBearerAuthenticationDebug(this IApplicationBuilder app, string key)
     {
       var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
 
@@ -27,15 +31,18 @@ namespace LUSVA.WebApi.Extensions
         AuthenticationType = JwtBearerDefaults.AuthenticationScheme
       };
 
-      var options = new JwtBearerOptions
+      var options = new LusvaJwtBearerOptions
       {
         AutomaticAuthenticate = true,
         AutomaticChallenge = true,
         TokenValidationParameters = parameters,
         AuthenticationScheme = JwtBearerDefaults.AuthenticationScheme,
+        UserManager = (UserManager<User>) app.ApplicationServices.GetService(typeof(UserManager<User>)),
+        TokenService = (ITokenService) app.ApplicationServices.GetService(typeof(ITokenService)),
+        ValidateSecurityStamp = false
       };
 
-      return app.UseJwtBearerAuthentication(options);
+      return app.UseLusvaJwtBearerAuthentication(options);
     }
   }
 }

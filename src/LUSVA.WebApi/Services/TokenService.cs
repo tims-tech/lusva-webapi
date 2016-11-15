@@ -30,7 +30,8 @@ namespace LUSVA.WebApi.Services
       // You can add other claims here, if you want:
       var claims = new Claim[]
       {
-        new Claim(JwtRegisteredClaimNames.GivenName, user.UserName),
+        new Claim(JwtRegisteredClaimNames.Email, user.Email),
+        new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName),
         new Claim(JwtRegisteredClaimNames.NameId, user.Id),
         new Claim(JwtRegisteredClaimNames.Jti, user.SecurityStamp),
         new Claim(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(issued).ToString(), ClaimValueTypes.Integer64)
@@ -65,6 +66,13 @@ namespace LUSVA.WebApi.Services
       var identity = new ClaimsIdentity(jwt.Claims);
       var principal = new ClaimsPrincipal(identity);
       return Task.FromResult(principal);
+    }
+
+    public Task<Claim> GetSecurityStampFromTokenAsync(string token)
+    {
+      var principal = GetUserFromTokenAsync(token).Result;
+      var claim = principal.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Jti);
+      return Task.FromResult(claim);
     }
 
     public Task<JwtSecurityToken> Unprotect(string token)

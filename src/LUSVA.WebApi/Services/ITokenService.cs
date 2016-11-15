@@ -14,6 +14,8 @@ namespace LUSVA.WebApi.Services
 
     Task<ClaimsPrincipal> GetUserFromTokenAsync(JwtSecurityToken jwt);
 
+    Task<Claim> GetSecurityStampFromTokenAsync(string token);
+
     Task<JwtSecurityToken> Unprotect(string token);
 
     bool IsBearerToken(string token);
